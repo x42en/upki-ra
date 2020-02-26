@@ -23,6 +23,20 @@ def all_options():
 
     return jsonify({'status': 'success', 'options': options})
 
+@private_api.route('/node/<dn>', methods=['GET'])
+def get_node():
+    data = request.get_json()
+    try:
+        data['requested_dn'] = base64.b64decode(dn).decode("utf-8")
+    except Exception as err:
+        return send_error(err)
+    try:
+        data = current_app.ra.get_node(data['requested_dn'])
+    except Exception as err:
+        return send_error(err)
+
+    return jsonify({'status': 'success', 'node': data})
+
 @private_api.route('/nodes', methods=['GET'])
 def list_nodes():
     try:

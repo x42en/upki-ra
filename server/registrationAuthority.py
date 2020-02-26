@@ -269,6 +269,14 @@ class RegistrationAuthority(server.utils.Tools):
 
         return self.nodes
 
+    def get_node(self, dn):
+        try:
+            self.node = self._send('get_node', params=dn)
+        except Exception as err:
+            raise Exception(err)
+
+        return self.node
+
     def register_node(self, params):
         try:
             data = self._check_node_params(params)
